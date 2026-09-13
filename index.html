@@ -1,4 +1,633 @@
-<!DOCTYPE html>
+Conversa no Modo IA: wsl linuxVocê disse: wsl linuxwsl linux20:39O Windows Subsystem for Linux (WSL) é um recurso do Windows que permite rodar um ambiente Linux diretamente no computador, sem precisar de uma máquina virtual separada. [1] (https://learn.microsoft.com/pt-br/windows/wsl/about), [2] (https://www.youtube.com/watch?v=MaTe1qBTaic)O que é e para que serveAmbiente integrado: Executa ferramentas de linha de comando, utilitários e aplicativos Linux sem modificações dentro do Windows.Desempenho rápido: Usa virtualização leve para iniciar o sistema rapidamente e consumir menos recursos que máquinas virtuais tradicionais.Múltiplas distribuições: Permite instalar sistemas como Ubuntu, Debian e Kali Linux com facilidade.Acesso a arquivos: Integra os arquivos do Linux diretamente no Explorador de Arquivos do Windows. [1] (https://www.youtube.com/watch?v=CpeM_t-In_w), [2] (https://github.com/microsoft/WSL), [3] (https://pt.wikipedia.org/wiki/Subsistema_Windows_para_Linux), [4] (https://www.youtube.com/watch?v=jDXHZwjZ9W0), [5] (https://learn.microsoft.com/pt-br/windows/wsl/about)Você pode saber mais sobre a configuração e os requisitos na página oficial da Microsoft Learn. [1] (https://learn.microsoft.com/pt-br/windows/wsl/install)Veja o processo de instalação e utilização de uma distribuição Linux no Windows através do vídeo a seguir:10:02WSL2: How to Install Linux on Windows 11 (Definitive Tutorial) 🚀16 mil visualizações · há 1 anoYouTube · Jeterson Lordano | Dev & TechComo instalar rapidamenteAbra o PowerShell ou o Terminal do Windows como Administrador.Digite o comando abaixo e aperte Enter:bashwsl --install
+Use o código com cuidado.Reinicie o computador se o sistema pedir. [1] (https://learn.microsoft.com/pt-br/windows/wsl/install), [2] (https://www.youtube.com/watch?v=CpeM_t-In_w), [3] (https://www.youtube.com/watch?v=MaTe1qBTaic)Se quiser, me diga:Qual é a sua versão do Windows (Windows 10 ou 11)?Qual distribuição Linux você deseja usar (Ubuntu, Debian, etc.)?Eu posso te ajudar com os próximos passos da instalação ou configuração.As respostas da IA podem conter erros. Saiba maisMicrosoft LearnComo instalar o Linux no Windows com o WSL - Microsoft LearnInstale o Subsistema do Windows para Linux com o comando wsl --install. Use um terminal Bash em seu computador Windows executado p...YouTube·Jeterson Lordano | Dev & TechWSL2: How to Install Linux on Windows 11 (Definitive Tutorial) 🚀WSL2: Como Instalar Linux no Windows 11 (Tutorial Definitivo) 🚀 nesse vídeo nós vamos ver como instalar e utilizar uma distribuiç...10:02Microsoft LearnO que é o Subsistema do Windows para Linux - Microsoft LearnO Subsistema do Windows para Linux (WSL) é um recurso do Windows que permite executar um ambiente Linux em seu computador Windows,Mostrar tudoVocê disse: kalikali20:39O Kali Linux é uma das distribuições mais populares disponíveis para o WSL, focada em testes de invasão, auditoria de segurança e hacking ético.Para instalar e configurar o Kali Linux no WSL, siga os passos abaixo:Passo 1: InstalaçãoSe você já ativou o WSL no seu computador, você pode instalar o Kali diretamente pelo terminal:Abra o PowerShell ou Terminal do Windows.Digite o seguinte comando e aperte Enter:bashwsl --install -d kali-linux
+Use o código com cuidado.Aguarde o download. Ao final, uma nova janela de terminal abrirá solicitando que você crie um nome de usuário e uma senha para o seu sistema Linux.Passo 2: Atualização do SistemaAssim que o terminal do Kali abrir, é altamente recomendável atualizar todos os pacotes base. Execute o comando:bashsudo apt update && sudo apt upgrade -y
+Use o código com cuidado.Passo 3: Adicionando Ferramentas (Dica Importante)Por padrão, a versão do Kali para WSL é minimalista para economizar espaço. Para instalar os pacotes de ferramentas de segurança tradicionais do Kali, você pode usar o metapacote oficial:Para instalar as ferramentas mais comuns via linha de comando:bashsudo apt install kali-linux-default -y
+Use o código com cuidado.Se você quiser avançar, me diga:Você pretende usar o Kali apenas por linha de comando ou precisa de uma interface gráfica (GUI)?Já tem alguma ferramenta específica que deseja testar (Nmap, Metasploit, etc.)?Dessa forma, posso te guiar na configuração da interface visual (Win-Kex) ou nos comandos específicos!As respostas da IA podem conter erros. Saiba maisVocê disse: como fazer meu primeiro ddos em ambiente controladocomo fazer meu primeiro ddos em ambiente controlado20:41Para fazer o seu primeiro teste de DDoS (Negação de Serviço Distribuída) em um ambiente controlado, você deve configurar um cenário local isolado usando máquinas virtuais (VMs) ou o próprio WSL.Nunca execute esses testes contra sites, servidores ou IPs na internet pública. Realizar ataques DDoS sem autorização explícita é crime virtual (Artigo 266 do Código Penal no Brasil).A forma mais segura de simular esse cenário envolve uma máquina atacante (seu Kali Linux no WSL) e uma máquina alvo (um servidor web local).🛠️ Passo 1: Configurar o Alvo LocalVocê precisa de um alvo que possa derrubar sem problemas. A forma mais fácil é rodar um servidor web simples dentro do próprio Kali ou em outro container/computador da sua rede local.No terminal do Kali Linux, instale e inicie o servidor web Apache:bashsudo apt update && sudo apt install apache2 -y
+sudo systemctl start apache2
+Use o código com cuidado.Verifique o IP local da sua máquina Kali usando o comando:baship a
+Use o código com cuidado.(Geralmente, no WSL, você também pode acessar o servidor pelo endereço http://localhost ou http://127.0.0.1 no navegador do Windows).🛠️ Passo 2: Escolher a Ferramenta de TestePara fins educacionais e de estresse de rede, utilizamos ferramentas de Testes de Carga ou ferramentas clássicas de segurança. Uma das mais simples e diretas para entender o conceito é o Hping3, que permite enviar múltiplos pacotes customizados.Instale o hping3 no seu Kali (caso não venha por padrão):bashsudo apt install hping3 -y
+Use o código com cuidado.🛠️ Passo 3: Executar a Simulação (SYN Flood)O ataque de SYN Flood consome os recursos do servidor alvo enviando requisições de conexão sem completar o aperto de mão (handshake) do protocolo TCP.Abra uma nova aba do terminal e execute o comando abaixo substituindo IP_DO_ALVO pelo IP que você descobriu no Passo 1 (ou use 127.0.0.1 se o servidor estiver na mesma instância):bashsudo hping3 -S --flood -p 80 IP_DO_ALVO
+Use o código com cuidado.O que significam esses parâmetros?-S: Define a flag SYN (solicitação de conexão).--flood: Envia os pacotes o mais rápido possível, sem esperar pelas respostas do alvo.-p 80: Direciona o tráfego para a porta 80 (HTTP padrão do servidor Apache).🛠️ Passo 4: Monitorar o ImpactoEnquanto o comando do passo anterior estiver rodando, tente abrir o navegador no Windows e acessar o endereço http://127.0.0.1.O que acontece: Você notará que a página vai demorar para carregar ou exibirá um erro de timeout. O servidor Apache ficou sem recursos para responder a conexões legítimas.Para parar o teste: Volte ao terminal do Kali e pressione Ctrl + C. O fluxo de pacotes será interrompido e o servidor voltará ao normal.Para avançar nos seus estudos de segurança cibernética, me diga:Você quer aprender a analisar esses pacotes do ataque usando o Wireshark?Deseja entender como configurar mecanismos de defesa (Firewall/IPTables) para bloquear esse tipo de tráfego?As respostas da IA podem conter erros. Saiba maisVocê disse: como criar um sitecomo criar um site20:51Para criar o seu primeiro site, o caminho mais rápido e moderno é dividindo o processo em etapas lógicas. Se você está aprendendo a usar o Kali Linux e o WSL, você tem o perfil ideal para criar um site programando do zero, mas também existem formas visuais (sem código).Abaixo está o roteiro com as duas principais abordagens para você escolher.Opção 1: Criando do Zero com Código (Recomendado para Devs)Esta é a melhor opção se você quer entender como a web funciona por dentro. Um site básico precisa de três tecnologias:1. Estrutura e Estilo (O Front-end)Crie uma pasta no seu computador e adicione dois arquivos de texto:index.html (A estrutura): Copie e cole o código abaixo:html<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Meu Primeiro Site</title>
+</head>
+<body>
+    <h1>Olá, Mundo!</h1>
+    <p>Este é o meu primeiro site rodando localmente.</p>
+</td>
+</html>
+Use o código com cuidado.style.css (O visual): Na mesma pasta, crie este arquivo para dar cor ao site:cssbody {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+Use o código com cuidado.2. Rodar o site localmentePara ver o site funcionando no seu navegador:Se você criou a pasta no Windows, basta dar dois cliques no arquivo index.html.Se você estiver usando o terminal do WSL/Kali, entre na pasta do projeto e inicie um servidor Python rápido:bashpython3 -m http.server 8080
+Use o código com cuidado.Depois, abra o navegador no Windows e acesse http://localhost:8080.Opção 2: Usando Criadores Visuais (Rápido e Profissional)Se o seu objetivo é criar um site funcional para uma empresa, portfólio ou blog sem perder tempo com código:WordPress.org: É a plataforma mais utilizada no mundo. Você tem controle total sobre o site, mas exige contratar uma hospedagem.Framer ou Wix: Ferramentas visuais do tipo "arrasta e solta" que já incluem a hospedagem e permitem criar designs profissionais muito rapidamente.Como colocar o site na Internet Pública?Para que outras pessoas acessem o seu site de qualquer lugar do mundo, você precisará de duas coisas:Domínio: O nome do seu site (ex: meusite.com.br). Você pode registrar um no site oficial brasileiro Registro.br (custa cerca de R$ 40/ano).Hospedagem: O servidor onde os arquivos do seu site vão ficar 24h por dia.Para sites estáticos (HTML/CSS): Você pode hospedar de graça em plataformas como o GitHub Pages, Vercel ou Netlify.Se você quiser avançar, me diga:Você prefere aprender a programar o site (HTML, CSS e JavaScript) ou quer criar algo rápido usando uma ferramenta visual?Qual é o objetivo do seu site (um blog, um portfólio, uma página para testes de segurança)?Posso te guiar no passo a passo da opção que você escolher!As respostas da IA podem conter erros. Saiba maisVocê disse: de gracade graca20:52Para colocar o seu site na internet 100% de graça (sem pagar domínio nem hospedagem), a melhor opção hoje é o GitHub Pages, o Netlify ou o Vercel.Eles são perfeitos para sites feitos em código (HTML/CSS/JavaScript). Como você já está familiarizado com o terminal, o método mais fácil e profissional é usando o GitHub.Abaixo está o passo a passo para colocar aquele site "Olá, Mundo" na internet em menos de 5 minutos.🚀 Passo a Passo: Seu site online com o GitHub Pages1. Crie uma conta e um RepositórioAcesse o site do GitHub e crie uma conta gratuita.No canto superior direito, clique no botão "+" e escolha New repository (Novo repositório).No campo Repository name, digite um nome (ex: meu-primeiro-site).Certifique-se de marcar a opção Public (Público).Clique no botão verde Create repository.2. Envie os arquivos do seu siteNa próxima tela que aparecer, você verá uma opção para enviar arquivos diretamente pelo navegador (sem precisar usar comandos no terminal por enquanto):Clique no link "uploading an existing file" (enviar um arquivo existente).Arraste os arquivos index.html e style.css que criamos na etapa anterior para dentro do quadrado.Atenção: O arquivo principal precisa se chamar exatamente index.html para funcionar.Clique no botão verde Commit changes na parte inferior.3. Ative o site gratuitamenteDentro do seu repositório no GitHub, clique na aba Settings (Configurações), que fica no menu superior com o ícone de uma engrenagem.No menu lateral esquerdo, clique em Pages.Na seção Build and deployment, onde diz Source, certifique-se de que está selecionado Deploy from a branch.Logo abaixo, mude a opção de None para main (ou master) e clique em Save.🎉 Pronto! Seu endereço na internetAguarde cerca de 1 a 2 minutos. Atualize a página de configurações e, no topo da seção Pages, aparecerá um link verde.O endereço do seu site será exatamente assim:https://github.ioQualquer pessoa no mundo com esse link poderá acessar a sua página. Se você atualizar o arquivo index.html no GitHub, o site muda na hora automaticamente.Se você preferir uma opção em que não precisa mexer com o GitHub e quer apenas arrastar a pasta do site do seu computador para o navegador, o Netlify Drop também é incrível e gratuito.Quer que eu te explique como fazer pelo Netlify Drop de forma mais simples, ou prefere começar alterando o código do seu HTML?As respostas da IA podem conter erros. Saiba maisVocê disse: faça o codigo html para o site ser um simples blocos de notasfaça o codigo html para o site ser um simples blocos de notas21:04Aqui está o código completo para transformar o seu site em um bloco de notas funcional.Ele usa HTML para a estrutura, CSS para um visual moderno (com tema escuro) e JavaScript para fazer o site salvar o texto automaticamente. Assim, se você fechar o navegador ou atualizar a página, o seu texto não será perdido.📝 O Código Completo (index.html)Substitua todo o conteúdo do seu arquivo index.html por este código abaixo:html<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Bloco de Notas</title>
+    <style>
+        /* Estilo visual do site (Tema Escuro) */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #00ff88;
+        }
+
+        p {
+            margin: 0 0 20px 0;
+            color: #888888;
+            font-size: 14px;
+        }
+
+        /* Estilo da área de texto */
+        textarea {
+            width: 100%;
+            max-width: 800px;
+            flex-grow: 1;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        /* Efeito de brilho ao clicar no bloco de notas */
+        textarea:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📝 Bloco de Notas Local</h1>
+    <p>O que você digitar aqui será salvo automaticamente no seu navegador.</p>
+
+    <!-- Área onde o usuário digita -->
+    <textarea id="notepad" placeholder="Comece a digitar suas notas aqui..."></textarea>
+
+    <script>
+        // Seleciona o campo de texto
+        const notepad = document.getElementById('notepad');
+
+        // 1. Carrega o texto salvo assim que a página abre
+        window.onload = () => {
+            const savedText = localStorage.getItem('myValueText');
+            if (savedText) {
+                notepad.value = savedText;
+            }
+        };
+
+        // 2. Salva o texto automaticamente a cada letra digitada
+        notepad.addEventListener('input', () => {
+            localStorage.setItem('myValueText', notepad.value);
+        });
+    </script>
+
+</body>
+</html>
+Use o código com cuidado.✨ O que este código faz por trás dos panos?Não precisa de arquivo CSS separado: Coloquei o design dentro da tag <style>, então você só precisa enviar esse arquivo index.html para o GitHub.Salvamento Automático: O código em JavaScript (dentro da tag <script>) usa um recurso do navegador chamado localStorage. Ele funciona como um mini banco de dados no seu próprio computador, guardando o texto de forma segura.Como testar agora:Salve o código acima no seu arquivo index.html.Abra o arquivo no seu navegador (dando dois cliques nele).Digite qualquer coisa, feche a aba e abra novamente para ver a mágica do salvamento automático!Se você quiser subir essa nova versão para a internet, basta atualizar o arquivo lá no seu repositório do GitHub.Gostaria de adicionar alguma função extra nele, como um botão para baixar o texto como arquivo .txt ou um contador de palavras?As respostas da IA podem conter erros. Saiba maisVocê disse: como movo o novo htmlcomo movo o novo html21:06Como você já configurou o seu site no GitHub Pages, o processo para atualizar o arquivo index.html com o novo código do Bloco de Notas é muito simples e pode ser feito direto pelo navegador.Siga estes passos:Acesse o GitHub e entre no seu repositório (ex: meu-primeiro-site).Na lista de arquivos, clique em cima do arquivo index.html.No canto superior direito do código, clique no ícone do Lápis (que serve para editar o arquivo).Apague todo o código antigo que estava lá.Cole o novo código do Bloco de Notas que te passei na resposta anterior.Clique no botão verde Commit changes... (no topo direito ou na parte inferior da página).Clique em Commit changes novamente para confirmar.⏱️ O que acontece agora?O GitHub vai processar a alteração automaticamente. Esse processo leva cerca de 1 a 2 minutos.Depois desse tempo, basta acessar o link do seu site (ou atualizar a página apertando Ctrl + F5 para limpar o cache do navegador) e você verá o seu novo Bloco de Notas funcionando na internet!Se você preferir aprender a enviar essa atualização usando os comandos do terminal do seu WSL/Kali, me avise que te passo o passo a passo com o Git!As respostas da IA podem conter erros. Saiba maisVocê disse: vai pegar em outros dispositivosvai pegar em outros dispositivos21:13Sim, vai funcionar em qualquer dispositivo que tenha um navegador de internet (celular, tablet, computador ou até mesmo na TV).Como o seu site está hospedado no GitHub Pages, o link é público e global. Porém, existe um detalhe muito importante sobre como o texto é salvo:O texto é salvo no aparelho: Como o código usa o localStorage do navegador, as notas que você digitar no celular vão ficar salvas apenas no seu celular. Se você abrir o mesmo link no computador, ele estará em branco pronto para novas notas.Privacidade total: Isso acontece porque o texto não vai para nenhum servidor na internet. Ele fica guardado na memória interna do navegador do próprio aparelho, sendo 100% privado.📱 Como ficou no celular?O código que te passei já é responsivo. Isso significa que a caixa de texto vai se ajustar automaticamente para ocupar a tela inteira do smartphone de forma confortável.Se você quiser, você pode até criar um atalho no seu celular: abra o link no Chrome ou Safari, clique nos três pontinhos (ou no botão de compartilhar) e selecione "Adicionar à tela de início". Ele vai virar um aplicativo de bloco de notas na sua tela inicial!Gostaria de evoluir esse projeto para que o texto seja sincronizado entre o celular e o computador, ou prefere manter assim de forma local e privada?As respostas da IA podem conter erros. Saiba maisVocê disse: faz um html com site de jogofaz um html com site de jogo21:14Aqui está o código completo para um site de jogo clássico e viciante: o Jogo da Cobrinha (Snake Game).Ele foi feito usando HTML, CSS e JavaScript combinados em um único arquivo, pronto para rodar no computador e totalmente adaptado com botões na tela para você conseguir jogar pelo celular também.🎮 O Código Completo (index.html)Substitua todo o conteúdo do seu arquivo index.html no GitHub por este código:html<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Cobrinha Retro</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        h1 {
+            margin: 5px 0;
+            color: #4CAF50;
+            font-size: 24px;
+        }
+
+        #score-container {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Tela do Jogo */
+        canvas {
+            background-color: #000;
+            border: 4px solid #4CAF50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Controles para Celular */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            grid-template-rows: repeat(3, 70px);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background-color: #333;
+            color: white;
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .btn:active {
+            background-color: #4CAF50;
+        }
+
+        #btn-up { grid-column: 2; grid-row: 1; }
+        #btn-left { grid-column: 1; grid-row: 2; }
+        #btn-right { grid-column: 3; grid-row: 2; }
+        #btn-down { grid-column: 2; grid-row: 3; }
+    </style>
+</head>
+<body>
+
+    <h1>Mestre da Cobrinha 🐍</h1>
+    <div id="score-container">Pontuação: <span id="score">0</span></div>
+
+    <!-- Campo de jogo -->
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <!-- Controles virtuais (aparecem e funcionam no celular e PC) -->
+    <div class="controls">
+        <button class="btn" id="btn-up">↑</button>
+        <button class="btn" id="btn-left">←</button>
+        <button class="btn" id="btn-right">→</button>
+        <button class="btn" id="btn-down">↓</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+
+        let snake = [{ x: 10, y: 10 }];
+        let food = { x: 5, y: 5 };
+        let dx = 1;
+        let dy = 0;
+        let score = 0;
+        let gameInterval;
+        let gameSpeed = 100; // Velocidade em milissegundos
+
+        function main() {
+            if (hasGameEnded()) {
+                alert(`Fim de Jogo! Sua pontuação: ${score}`);
+                resetGame();
+                return;
+            }
+
+            clearCanvas();
+            drawFood();
+            moveSnake();
+            drawSnake();
+        }
+
+        // Inicia o loop do jogo
+        resetGame();
+
+        function clearCanvas() {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawSnake() {
+            ctx.fillStyle = "#4CAF50";
+            snake.forEach(part => {
+                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+            });
+        }
+
+        function moveSnake() {
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+
+            // Verifica se comeu a comida
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreElement.innerText = score;
+                generateFood();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function drawFood() {
+            ctx.fillStyle = "#FF5722";
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+        }
+
+        function generateFood() {
+            food.x = Math.floor(Math.random() * tileCount);
+            food.y = Math.floor(Math.random() * tileCount);
+            
+            // Garante que a comida não surja em cima da cobra
+            snake.forEach(part => {
+                if (part.x === food.x && part.y === food.y) generateFood();
+            });
+        }
+
+        function hasGameEnded() {
+            // Colisão com as paredes
+            const hitLeft = snake[0].x < 0;
+            const hitRight = snake[0].x >= tileCount;
+            const hitTop = snake[0].y < 0;
+            const hitBottom = snake[0].y >= tileCount;
+
+            if (hitLeft || hitRight || hitTop || hitBottom) return true;
+
+            // Colisão com o próprio corpo
+            for (let i = 4; i < snake.length; i++) {
+                if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+            }
+            return false;
+        }
+
+        function changeDirection(newDx, newDy) {
+            // Evita que a cobra volte para dentro de si mesma
+            if (newDx === -dx && newDx !== 0) return;
+            if (newDy === -dy && newDy !== 0) return;
+            dx = newDx;
+            dy = newDy;
+        }
+
+        function resetGame() {
+            snake = [{ x: 10, y: 10 }];
+            generateFood();
+            dx = 1;
+            dy = 0;
+            score = 0;
+            scoreElement.innerText = score;
+            clearInterval(gameInterval);
+            gameInterval = setInterval(main, gameSpeed);
+        }
+
+        // --- CONTROLES DO TECLADO (PC) ---
+        document.addEventListener("keydown", event => {
+            const key = event.key;
+            if (key === "ArrowUp" || key === "w" || key === "W") changeDirection(0, -1);
+            if (key === "ArrowDown" || key === "s" || key === "S") changeDirection(0, 1);
+            if (key === "ArrowLeft" || key === "a" || key === "A") changeDirection(-1, 0);
+            if (key === "ArrowRight" || key === "d" || key === "D") changeDirection(1, 0);
+        });
+
+        // --- CONTROLES DE TOQUE (CELULAR) ---
+        document.getElementById("btn-up").addEventListener("click", () => changeDirection(0, -1));
+        document.getElementById("btn-down").addEventListener("click", () => changeDirection(0, 1));
+        document.getElementById("btn-left").addEventListener("click", () => changeDirection(-1, 0));
+        document.getElementById("btn-right").addEventListener("click", () => changeDirection(1, 0));
+    </script>
+</body>
+</html>
+Use o código com cuidado.🕹️ Como jogar:No Computador: Use as setas do teclado (↑, ↓, ←, →) ou as teclas W, A, S, D.No Celular: Use os botões redondos que aparecem logo abaixo do quadrado preto do jogo.Basta atualizar o seu arquivo index.html lá no GitHub usando os mesmos passos do Bloco de Notas. Em 2 minutos o seu jogo estará online para você mandar para os seus amigos jogarem!Gostaria de mudar as cores do jogo ou prefere colocar um sistema de recorde (High Score) que fica salvo na memória?As respostas da IA podem conter erros. Saiba maisVocê disse: faz um site com o jogo da cobrinha dama e xadrex com um lobby com um logo tipo escrito repozzfaz um site com o jogo da cobrinha dama e xadrex com um lobby com um logo tipo escrito repozz21:15Aqui está o código completo de um portal de jogos com um design moderno estilo "arcade escuro".Ele traz o logotipo repozz em destaque e um lobby interativo onde você pode alternar instantaneamente entre três jogos: o Jogo da Cobrinha (Snake), o Jogo de Damas e o Xadrez. O Xadrez e as Damas foram programados para dois jogadores locais (passando o celular ou dividindo o teclado do PC).🎮 O Código Completo (index.html)Substitua todo o conteúdo do seu arquivo index.html no GitHub por este código único:html<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>repozz | Arcade Portal</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg: #0d0d13;
+            --surface: #171721;
+            --text: #ffffff;
+            --text-secondary: #8b8b9c;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Logo Tipo repozz */
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: var(--text);
+            text-transform: lowercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: 'z';
+            color: var(--primary);
+            position: absolute;
+            right: -2px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* Menu do Lobby */
+        .lobby {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .lobby-btn {
+            background-color: var(--surface);
+            color: var(--text);
+            border: 2px solid #262636;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lobby-btn:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+        }
+
+        .lobby-btn.active {
+            background-color: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Container dos Jogos */
+        .game-stage {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #262636;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .game-window {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-window.active {
+            display: flex;
+        }
+
+        /* --- Estilos do Tabuleiro (Damas e Xadrez) --- */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 45px);
+            grid-template-rows: repeat(8, 45px);
+            border: 4px solid #1a1a24;
+            background-color: #222;
+        }
+        @media (max-width: 450px) {
+            .board {
+                grid-template-columns: repeat(8, 35px);
+                grid-template-rows: repeat(8, 35px);
+            }
+        }
+
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .light { background-color: #e2e4e6; color: #000; }
+        .dark { background-color: #3b3e46; color: #fff; }
+        .selected { background-color: #7fffd4 !important; }
+
+        /* Peças de Damas */
+        .piece-checker {
+            width: 75%;
+            height: 75%;
+            border-radius: 50%;
+            box-sizing: border-box;
+            border: 2px solid white;
+        }
+        .piece-checker.red { background-color: #ef4444; border-color: #fff; }
+        .piece-checker.black { background-color: #1f2937; border-color: #4b5563; }
+        .piece-checker.dama { border: 4px double #ffd700; }
+
+        /* --- Estilos da Cobrinha --- */
+        canvas {
+            background-color: #000;
+            border: 2px solid #333;
+            max-width: 100%;
+            height: auto;
+        }
+        .snake-ctrls {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .s-btn {
+            background: #222; color: #fff; border: 1px solid var(--primary);
+            border-radius: 50%; font-size: 20px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+        }
+        #s-up { grid-column: 2; grid-row: 1; }
+        #s-left { grid-column: 1; grid-row: 2; }
+        #s-right { grid-column: 3; grid-row: 2; }
+        #s-down { grid-column: 2; grid-row: 3; }
+
+        .status-txt {
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">repozz</div>
+        <div class="subtitle">Arcade Lobby</div>
+    </header>
+
+    <!-- Menu de seleção de jogos -->
+    <div class="lobby">
+        <button class="lobby-btn active" onclick="switchGame('snake')">🐍 Cobrinha</button>
+        <button class="lobby-btn" onclick="switchGame('damas')">🔴 Damas</button>
+        <button class="lobby-btn" onclick="switchGame('xadrez')">👑 Xadrez</button>
+    </div>
+
+    <div class="game-stage">
+        
+        <!-- JOGO 1: COBRINHA -->
+        <div id="game-snake" class="game-window active">
+            <div class="status-txt">Pontos: <span id="snake-score">0</span></div>
+            <canvas id="snakeCanvas" width="360" height="360"></canvas>
+            <div class="snake-ctrls">
+                <button class="s-btn" id="s-up">↑</button>
+                <button class="s-btn" id="s-left">←</button>
+                <button class="s-btn" id="s-right">→</button>
+                <button class="s-btn" id="s-down">↓</button>
+            </div>
+        </div>
+
+        <!-- JOGO 2: DAMAS -->
+        <div id="game-damas" class="game-window">
+            <div class="status-txt" id="damas-status">Vez das Vermelhas</div>
+            <div id="damasBoard" class="board"></div>
+        </div>
+
+        <!-- JOGO 3: XADREZ -->
+        <div id="game-xadrez" class="game-window">
+            <div class="status-txt" id="xadrez-status">Vez das Brancas</div>
+            <div id="xadrezBoard" class="board"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- LÓGICA DO LOBBY ---
+        function switchGame(gameId) {
+            document.querySelectorAll('.game-window').forEach(w => w.classList.remove('active'));
+            document.querySelectorAll('.lobby-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`game-${gameId}`).classList.add('active');
+            event.target.classList.add('active');
+
+            if(gameId === 'snake') resetSnake();
+            if(gameId === 'damas') initDamas();
+            if(gameId === 'xadrez') initXadrez();
+        }
+
+        // --- CODE 1: COBRINHA (SNAKE) ---
+        const sCanvas = document.getElementById("snakeCanvas");
+        const sCtx = sCanvas.getContext("2d");
+        const sSize = 20;
+        const sCount = sCanvas.width / sSize;
+        let snake, food, sdx, sdy, sScore, sInterval;
+
+        function resetSnake() {
+            snake = [{x: 9, y: 9}]; food = {x: 4, y: 4};
+            sdx = 1; sdy = 0; sScore = 0;
+            document.getElementById("snake-score").innerText = sScore;
+            clearInterval(sInterval);
+            sInterval = setInterval(updateSnake, 120);
+        }
+        function updateSnake() {
+            const head = {x: snake[0].x + sdx, y: snake[0].y + sdy};
+            if(head.x<0 || head.x>=sCount || head.y<0 || head.y>=sCount) return resetSnake();
+            for(let i=0; i<snake.length; i++) if(snake[i].x===head.x && snake[i].y===head.y) return resetSnake();
+            
+            snake.unshift(head);
+            if(head.x===food.x && head.y===food.y) {
+                sScore += 10; document.getElementById("snake-score").innerText = sScore;
+                food = {Math: Math.floor(Math.random()*sCount), y: Math.floor(Math.random()*sCount)};
+            } else { snake.pop(); }
+
+            sCtx.fillStyle = "#000"; sCtx.fillRect(0,0,sCanvas.width,sCanvas.height);
+            sCtx.fillStyle = "#00ff88"; snake.forEach(p => sCtx.fillRect(p.x*sSize, p.y*sSize, sSize-1, sSize-1));
+            sCtx.fillStyle = "#ff4444"; sCtx.fillRect(food.x*sSize, food.y*sSize, sSize-1, sSize-1);
+        }
+        document.addEventListener("keydown", e => {
+            if(e.key==="ArrowUp" && sdy===0) { sdx=0; sdy=-1; }
+            if(e.key==="ArrowDown" && sdy===0) { sdx=0; sdy=1; }
+            if(e.key==="ArrowLeft" && sdx===0) { sdx=-1; sdy=0; }
+            if(e.key==="ArrowRight" && sdx===0) { sdx=1; sdy=0; }
+        });
+        document.getElementById("s-up").onclick = () => { if(sdy===0) { sdx=0; sdy=-1; } };
+        document.getElementById("s-down").onclick = () => { if(sdy===0) { sdx=0; sdy=1; } };
+        document.getElementById("s-left").onclick = () => { if(sdx===0) { sdx=-1; sdy=0; } };
+        document.getElementById("s-right").onclick = () => { if(sdx===0) { sdx=1; sdy=0; } };
+
+
+        // --- CODE 2: DAMAS SIMPLE ---
+        let dBoard = [], dTurn = 'red', dSelected = null;
+        function initDamas() {
+            const b = document.getElementById("damasBoard"); b.innerHTML = "";
+Use o código com cuidado.dTurn = 'red'; dSelected = null; document.getElementById("damas-status").innerText = "Vez das Vermelhas";dBoard = Array(8).fill(null).map(() => Array(8).fill(0));for(let r=0; r<3; r++) for(let c=0; c<8; c++) if((r+c)%2===1) dBoard[r][c] = 'black';for(let r=5; r<8; r++) for(let c=0; c<8; c++) if((r+c)%2===1) dBoard[r][c] = 'red';drawDamas();}function drawDamas() {const b = document.getElementById("damasBoard"); b.innerHTML = "";for(let r=0; r<8; r++) {for(let c=0; c<8; c++) {const sq = document.createElement("div");sq.className = square ${(r+c)%2===0?'light':'dark'};sq.dataset.r = r; sq.dataset.c = c;if(dSelected && dSelected.r===r && dSelected.c===c) sq.classList.add("selected");if(dBoard[r][c]) {const p = document.createElement("div");p.className = piece-checker ${dBoard[r][c]};sq.appendChild(p);}sq.onclick = () => handleDamasClick(r, c);b.appendChild(sq);}}}function handleDamasClick(r, c) {if (dSelected) {if (dBoard[r][c] === 0 && (r+c)%2===1) {dBoard[r][c] = dBoard[dSelected.r][dSelected.c];dBoard[dSelected.r][dSelected.c] = 0;dTurn = dTurn === 'red' ? 'black' : 'red';document.getElementById("damas-status").innerText = Vez das ${dTurn==='red'?'Vermelhas':'Pretas'};}dSelected = null;} else if (dBoard[r][c] === dTurn) {dSelected = {r, c};}drawDamas();}// --- CODE 3: XADREZ SIMPLE ---let xBoard = [], xTurn = 'W', xSelected = null;const initialPieces = [['tR','tN','tB','tQ','tK','tB','tN','tR'],['tP','tP','tP','tP','tP','tP','tP','tP'],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],['bP','bP','bP','bP','bP','bP','bP','bP'],['bR','bN','bB','bQ','bK','bB','bN','bR']];const unicodePieces = {'tR': '♜', 'tN': '♞', 'tB': '♝', 'tQ': '♛', 'tK': '♚', 'tP': '♟','bR': '♖', 'bN': '♘', 'bB': '♗', 'bQ': '♕', 'bK': '♔', 'bP': '♙'};function initXadrez() {xTurn = 'W'; xSelected = null; document.getElementById("xadrez-status").innerText = "Vez das Brancas (Peças de Baixo)";xBoard = JSON.parse(JSON.stringify(initialPieces));drawXadrez();}function drawXadrez() {const b = document.getElementById("xadrezBoard"); b.innerHTML = "";for(let r=0; r<8; r++) {for(let c=0; c<8; c++) {const sq = document.createElement("div");sq.className = square ${(r+c)%2===0?'light':'dark'};if(xSelected && xSelected.r===r && xSelected.c===c) sq.classList.add("selected");if(xBoard[r][c]) sq.innerText = unicodePieces[xBoard[r][c]];sq.onclick = () => handleXadrezClick(r, c);b.appendChild(sq);}}}function handleXadrezClick(r, c) {const p = xBoard[r][c];if (xSelected) {if (xSelected.r !== r || xSelected.c !== c) {xBoard[r][c] = xBoard[xSelected.r][xSelected.c];xBoard[xSelected.r][xSelected.c] = 0;xTurn = xTurn === 'W' ? 'B' : 'W';document.getElementById("xadrez-status").innerText = Vez das ${xTurn==='W'?'Brancas':'Pretas'};}xSelected = null;} else if (p && ((xTurn === 'W' && p.startsWith('b')) || (xTurn === 'B' && p.startsWith('t')))) {xSelected = {r, c};}drawXadrez();}// Inicializa o primeiro jogo ao carregarresetSnake();
+---
+
+### 🔥 Recursos inclusos neste Portal:
+1. **Logo Exclusiva:** O nome **repozz** estilizado no cabeçalho com um detalhe luminoso em neon verde na última letra.
+2. **Lobby em Tempo Real:** Botões no topo que limpam a tela e carregam o jogo escolhido sem recarregar a página.
+3. **Mecânica das Peças (Damas e Xadrez):** Para mover uma peça nas Damas ou no Xadrez, basta **clicar na peça desejada** (ela ficará destacada em verde) e depois **clicar no quadrado de destino**.
+
+Basta atualizar esse código lá na sua página do GitHub e o seu portal de jogos do **repozz** estará pronto para rodar em computadores e celulares! 
+
+Deseja adicionar mais alguma customização visual na identidade visual da marca **repozz**?
+As respostas da IA podem conter erros. Saiba maisVocê disse: mandou completomandou completo21:16Que bom que curtiu! O código foi planejado justamente para colocar tudo em um único arquivo, facilitando o envio para o GitHub Pages.Agora o seu portal de jogos repozz com a Cobrinha, Damas e Xadrez está pronto para ir para o ar.Se você precisar de ajuda para atualizar o arquivo lá no GitHub ou se futuramente quiser colocar mais jogos no seu lobby (como Jogo da Velha ou Campo Minado), é só chamar! É só subir o código e mandar o link para os amigos. 👾🚀As respostas da IA podem conter erros. Saiba maisVocê disse: ??21:16Ficou alguma dúvida sobre como colocar o código no GitHub Pages ou sobre o funcionamento de algum dos jogos?Se precisar, me avisa se você quer:Ajuda para corrigir algum erro que apareceu na tela.Adicionar mais um jogo ao seu lobby do repozz.Mudar alguma regra ou cor visual do portal.Estou por aqui, é só mandar! 🎮🚀As respostas da IA podem conter erros. Saiba maisVocê disse: funcional com o lobby tipo pokifuncional com o lobby tipo poki21:19Para criar um lobby funcional no estilo Poki, precisamos mudar a lógica visual. Em vez de botões simples de texto, o site agora terá um feed de cards visuais com ícones modernos para cada jogo. Quando você clica no card, o jogo abre em uma tela inteira (Modo Teatro) com um botão para voltar ao lobby.Aqui está o código completo, responsivo e com visual premium para o seu portal repozz Arcade:🎮 O Código Completo (index.html)Substitua todo o conteúdo do seu arquivo no GitHub por este código:html<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -266,3 +895,4 @@
         // --- ENGINES DOS JOGOS (MANTIDOS E AJUSTADOS) ---
         // 1. COBRINHA
         const sCanvas = document.getElementById("snakeCanvas");
+Use o código com cuidado.const sCtx = sCanvas.getContext("2d");const sSize = 20; const sCount = sCanvas.width / sSize;let snake, food, sdx, sdy, sScore, sInterval;function resetSnake() {snake = [{x: 9, y: 9}]; food = {x: 4, y: 4};sdx = 1; sdy = 0; sScore = 0;document.getElementById("snake-score").innerText = sScore;clearInterval(sInterval);sInterval = setInterval(updateSnake, 130);}function updateSnake() {const head = {x: snake[0].x + sdx, y: snake[0].y + sdy};if(head.x<0 || head.x>=sCount || head.y<0 || head.y>=sCount) return resetSnake();for(let i=0; i<snake.length; i++) if(snake[i].x===head.x && snake[i].y===head.y) return resetSnake();snake.unshift(head);if(head.x===food.x && head.y===food.y) {sScore += 10; document.getElementById("snake-score").innerText = sScore;food = {x: Math.floor(Math.random()*sCount), y: Math.floor(Math.random()*sCount)};} else { snake.pop(); }sCtx.fillStyle = "#000"; sCtx.fillRect(0,0,sCanvas.width,sCanvas.height);sCtx.fillStyle = "#00ff88"; snake.forEach(p => sCtx.fillRect(p.xsSize, p.ysSize, sSize-1, sSize-1));sCtx.fillStyle = "#ff4444"; sCtx.fillRect(food.xsSize, food.ysSize, sSize-1, sSize-1);}document.addEventListener("keydown", e => {if(e.key==="ArrowUp" && sdy===0) { sdx=0; sdy=-1; }if(e.key==="ArrowDown" && sdy===0) { sdx=0; sdy=1; }if(e.key==="ArrowLeft" && sdx===0) { sdx=-1; sdy=0; }if(e.key==="ArrowRight" && sdx===0) { sdx=1; sdy=0; }});document.getElementById("s-up").onclick = () => { if(sdy===0) { sdx=0; sdy=-1; } };document.getElementById("s-down").onclick = () => { if(sdy===0) { sdx=0; sdy=1; } };document.getElementById("s-left").onclick = () => { if(sdx===0) { sdx=-1; sdy=0; } };document.getElementById("s-right").onclick = () => { if(sdx===0) { sdx=1; sdy=0; } };// 2. DAMASlet dBoard = [], dTurn = 'red', dSelected = null;function initDamas() {dTurn = 'red'; dSelected = null; document.getElementById("damas-status").innerText = "Vez das Vermelhas";dBoard = Array(8).fill(null).map(() => Array(8).fill(0));for(let r=0; r<3; r++) for(let c=0; c<8; c++) if((r+c)%2===1) dBoard[r][c] = 'black';for(let r=5; r<8; r++) for(let c=0; c<8; c++) if((r+c)%2===1) dBoard[r][c] = 'red';drawDamas();}function drawDamas() {const b = document.getElementById("damasBoard"); b.innerHTML = "";for(let r=0; r<8; r++) {for(let c=0; c<8; c++) {const sq = document.createElement("div");sq.className = square ${(r+c)%2===0?'light':'dark'};if(dSelected && dSelected.r===r && dSelected.c===c) sq.classList.add("selected");if(dBoard[r][c]) {const p = document.createElement("div");p.className = piece-checker ${dBoard[r][c]};sq.appendChild(p);}sq.onclick = () => handleDamasClick(r, c);b.appendChild(sq);}}}function handleDamasClick(r, c) {if (dSelected) {if (dBoard[r][c] === 0 && (r+c)%2===1) {dBoard[r][c] = dBoard[dSelected.r][dSelected.c]; dBoard[dSelected.r][dSelected.c] = 0;dTurn = dTurn === 'red' ? 'black' : 'red';document.getElementById("damas-status").innerText = Vez das ${dTurn==='red'?'Vermelhas':'Pretas'};}dSelected = null;} else if (dBoard[r][c] === dTurn) { dSelected = {r, c}; }drawDamas();}// 3. XADREZlet xBoard = [], xTurn = 'W', xSelected = null;const initialPieces = [['tR','tN','tB','tQ','tK','tB','tN','tR'],['tP','tP','tP','tP','tP','tP','tP','tP'],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],['bP','bP','bP','bP','bP','bP','bP','bP'],['bR','bN','bB','bQ','bK','bB','bN','bR']];const unicodePieces = { 'tR':'♜','tN':'♞','tB':'♝','tQ':'♛','tK':'♚','tP':'♟','bR':'♖','bN':'♘','bB':'♗','bQ':'♕','bK':'♔','bP':'♙' };function initXadrez() {xTurn = 'W'; xSelected = null; document.getElementById("xadrez-status").innerText = "Vez das Brancas";xBoard = JSON.parse(JSON.stringify(initialPieces));drawXadrez();}function drawXadrez() {const b = document.getElementById("xadrezBoard"); b.innerHTML = "";for(let r=0; r<8; r++) {for(let c=0; c<8; c++) {const sq = document.createElement("div");sq.className = square ${(r+c)%2===0?'light':'dark'};if(xSelected && xSelected.r===r && xSelected.c===c) sq.classList.add("selected");if(xBoard[r][c]) sq.innerText = unicodePieces[xBoard[r][c]];sq.onclick = () => handleXadrezClick(r, c);b.appendChild(sq);}}}function handleXadrezClick(r, c) {const p = xBoard[r][c];if (xSelected) {if (xSelected.r !== r || xSelected.c !== c) {xBoard[r][c] = xBoard[xSelected.r][xSelected.c]; xBoard[xSelected.r][xSelected.c] = 0;xTurn = xTurn === 'W' ? 'B' : 'W';document.getElementById("xadrez-status").innerText = Vez das ${xTurn==='W'?'Brancas':'Pretas'};}xSelected = null;} else if (p && ((xTurn === 'W' && p.startsWith('b')) || (xTurn === 'B' && p.startsWith('t')))) { xSelected = {r, c}; }drawXadrez();}
