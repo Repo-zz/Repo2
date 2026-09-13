@@ -3,286 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>repozz | Arcade Portal</title>
+    <title>repozz | Jogos Grátis Online</title>
     <style>
         :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
             --primary: #00ff88;
-            --bg: #0d0d13;
-            --surface: #171721;
-            --text: #ffffff;
-            --text-secondary: #8b8b9c;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
         }
 
-        /* Logo Tipo repozz */
+        /* Topo do Site */
         header {
-            text-align: center;
-            margin-bottom: 25px;
+            background-color: var(--surface);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-bottom: 2px solid #334155;
         }
 
         .logo {
-            font-size: 48px;
+            font-size: 32px;
             font-weight: 900;
-            letter-spacing: -2px;
+            letter-spacing: -1.5px;
             color: var(--text);
             text-transform: lowercase;
-            position: relative;
-            display: inline-block;
+            cursor: pointer;
         }
 
-        .logo::after {
-            content: 'z';
+        .logo span {
             color: var(--primary);
-            position: absolute;
-            right: -2px;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 14px;
+        /* Container do Grid de Jogos (Estilo Poki) */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
+            letter-spacing: 1px;
         }
 
-        /* Menu do Lobby */
-        .lobby {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .grid-poki {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
         }
 
-        .lobby-btn {
+        /* Cards de Jogo */
+        .game-card {
             background-color: var(--surface);
-            color: var(--text);
-            border: 2px solid #262636;
-            padding: 12px 24px;
-            font-size: 16px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            aspect-ratio: 1 / 1;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.15);
+        }
+
+        .game-thumb {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+        }
+
+        /* Cores customizadas para cada card */
+        .card-snake .game-thumb { background: linear-gradient(135deg, #115e59, #134e4a); }
+        .card-damas .game-thumb { background: linear-gradient(135deg, #991b1b, #7f1d1d); }
+        .card-xadrez .game-thumb { background: linear-gradient(135deg, #374151, #1f2937); }
+
+        .game-info {
+            padding: 12px;
+            background-color: rgba(0,0,0,0.2);
             font-weight: 600;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* Tela de Jogo (Modo Teatro) */
+        #theater-mode {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.98);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: var(--surface);
+            color: #fff;
+            border: 2px solid #334155;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .lobby-btn:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
-        }
-
-        .lobby-btn.active {
-            background-color: var(--primary);
-            color: #000;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-        }
-
-        /* Container dos Jogos */
-        .game-stage {
-            background-color: var(--surface);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #262636;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .game-window {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .game-window.active {
-            display: flex;
-        }
-
-        /* --- Estilos do Tabuleiro (Damas e Xadrez) --- */
-        .board {
-            display: grid;
-            grid-template-columns: repeat(8, 45px);
-            grid-template-rows: repeat(8, 45px);
-            border: 4px solid #1a1a24;
-            background-color: #222;
-        }
-        @media (max-width: 450px) {
-            .board {
-                grid-template-columns: repeat(8, 35px);
-                grid-template-rows: repeat(8, 35px);
-            }
-        }
-
-        .square {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .light { background-color: #e2e4e6; color: #000; }
-        .dark { background-color: #3b3e46; color: #fff; }
-        .selected { background-color: #7fffd4 !important; }
-
-        /* Peças de Damas */
-        .piece-checker {
-            width: 75%;
-            height: 75%;
-            border-radius: 50%;
-            box-sizing: border-box;
-            border: 2px solid white;
-        }
-        .piece-checker.red { background-color: #ef4444; border-color: #fff; }
-        .piece-checker.black { background-color: #1f2937; border-color: #4b5563; }
-        .piece-checker.dama { border: 4px double #ffd700; }
-
-        /* --- Estilos da Cobrinha --- */
-        canvas {
-            background-color: #000;
-            border: 2px solid #333;
-            max-width: 100%;
-            height: auto;
-        }
-        .snake-ctrls {
-            display: grid;
-            grid-template-columns: repeat(3, 60px);
-            grid-template-rows: repeat(3, 60px);
-            gap: 8px;
-            margin-top: 15px;
-        }
-        .s-btn {
-            background: #222; color: #fff; border: 1px solid var(--primary);
-            border-radius: 50%; font-size: 20px; display: flex;
-            align-items: center; justify-content: center; cursor: pointer;
-        }
-        #s-up { grid-column: 2; grid-row: 1; }
-        #s-left { grid-column: 1; grid-row: 2; }
-        #s-right { grid-column: 3; grid-row: 2; }
-        #s-down { grid-column: 2; grid-row: 3; }
-
-        .status-txt {
-            margin-bottom: 15px;
             font-weight: bold;
-            color: var(--primary);
+            font-size: 16px;
+            transition: 0.2s;
         }
+
+        .btn-back:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .game-frame {
+            background-color: #171721;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        /* --- Estilos internos dos jogos --- */
+        .status-txt { margin-bottom: 15px; font-weight: bold; color: var(--primary); font-size: 18px; }
+        canvas { background-color: #000; border: 3px solid #334155; border-radius: 8px; max-width: 100%; height: auto; }
+        .snake-ctrls { display: grid; grid-template-columns: repeat(3, 55px); grid-template-rows: repeat(3, 55px); gap: 8px; margin-top: 15px; }
+        .s-btn { background: #334155; color: #fff; border: 1px solid var(--primary); border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        #s-up { grid-column: 2; grid-row: 1; } #s-left { grid-column: 1; grid-row: 2; } #s-right { grid-column: 3; grid-row: 2; } #s-down { grid-column: 2; grid-row: 3; }
+        .board { display: grid; grid-template-columns: repeat(8, 45px); grid-template-rows: repeat(8, 45px); border: 4px solid #1e293b; background-color: #222; }
+        @media (max-width: 450px) { .board { grid-template-columns: repeat(8, 35px); grid-template-rows: repeat(8, 35px); } }
+        .square { display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; }
+        .light { background-color: #e2e4e6; color: #000; } .dark { background-color: #4b5563; color: #fff; } .selected { background-color: #00ff88 !important; }
+        .piece-checker { width: 75%; height: 75%; border-radius: 50%; border: 2px solid white; box-sizing: border-box; }
+        .piece-checker.red { background-color: #ef4444; } .piece-checker.black { background-color: #0f172a; border-color: #4b5563; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">repozz</div>
-        <div class="subtitle">Arcade Lobby</div>
+        <div class="logo" onclick="closeGame()">repozz<span>.</span></div>
     </header>
 
-    <!-- Menu de seleção de jogos -->
-    <div class="lobby">
-        <button class="lobby-btn active" onclick="switchGame('snake')">🐍 Cobrinha</button>
-        <button class="lobby-btn" onclick="switchGame('damas')">🔴 Damas</button>
-        <button class="lobby-btn" onclick="switchGame('xadrez')">👑 Xadrez</button>
+    <!-- LOBBY PRINCIPAL ESTILO POKI -->
+    <div class="container" id="lobby-container">
+        <div class="section-title">Jogos Populares</div>
+        <div class="grid-poki">
+            
+            <!-- Card Cobrinha -->
+            <div class="game-card card-snake" onclick="openGame('snake')">
+                <div class="game-thumb">🐍</div>
+                <div class="game-info">Jogo da Cobrinha</div>
+            </div>
+
+            <!-- Card Damas -->
+            <div class="game-card card-damas" onclick="openGame('damas')">
+                <div class="game-thumb">🔴</div>
+                <div class="game-info">Damas Clássico</div>
+            </div>
+
+            <!-- Card Xadrez -->
+            <div class="game-card card-xadrez" onclick="openGame('xadrez')">
+                <div class="game-thumb">👑</div>
+                <div class="game-info">Xadrez Pro</div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="game-stage">
+    <!-- MODO TEATRO PARA RODAR OS JOGOS -->
+    <div id="theater-mode">
+        <button class="btn-back" onclick="closeGame()">← Voltar para o Lobby</button>
         
-        <!-- JOGO 1: COBRINHA -->
-        <div id="game-snake" class="game-window active">
-            <div class="status-txt">Pontos: <span id="snake-score">0</span></div>
-            <canvas id="snakeCanvas" width="360" height="360"></canvas>
-            <div class="snake-ctrls">
-                <button class="s-btn" id="s-up">↑</button>
-                <button class="s-btn" id="s-left">←</button>
-                <button class="s-btn" id="s-right">→</button>
-                <button class="s-btn" id="s-down">↓</button>
+        <div class="game-frame">
+            <!-- Espaço do Jogo da Cobrinha -->
+            <div id="play-snake" style="display:none; flex-direction:column; align-items:center;">
+                <div class="status-txt">Pontos: <span id="snake-score">0</span></div>
+                <canvas id="snakeCanvas" width="360" height="360"></canvas>
+                <div class="snake-ctrls">
+                    <button class="s-btn" id="s-up">↑</button>
+                    <button class="s-btn" id="s-left">←</button>
+                    <button class="s-btn" id="s-right">→</button>
+                    <button class="s-btn" id="s-down">↓</button>
+                </div>
+            </div>
+
+            <!-- Espaço do Jogo de Damas -->
+            <div id="play-damas" style="display:none; flex-direction:column; align-items:center;">
+                <div class="status-txt" id="damas-status">Vez das Vermelhas</div>
+                <div id="damasBoard" class="board"></div>
+            </div>
+
+            <!-- Espaço do Jogo de Xadrez -->
+            <div id="play-xadrez" style="display:none; flex-direction:column; align-items:center;">
+                <div class="status-txt" id="xadrez-status">Vez das Brancas</div>
+                <div id="xadrezBoard" class="board"></div>
             </div>
         </div>
-
-        <!-- JOGO 2: DAMAS -->
-        <div id="game-damas" class="game-window">
-            <div class="status-txt" id="damas-status">Vez das Vermelhas</div>
-            <div id="damasBoard" class="board"></div>
-        </div>
-
-        <!-- JOGO 3: XADREZ -->
-        <div id="game-xadrez" class="game-window">
-            <div class="status-txt" id="xadrez-status">Vez das Brancas</div>
-            <div id="xadrezBoard" class="board"></div>
-        </div>
-
     </div>
 
     <script>
-        // --- LÓGICA DO LOBBY ---
-        function switchGame(gameId) {
-            document.querySelectorAll('.game-window').forEach(w => w.classList.remove('active'));
-            document.querySelectorAll('.lobby-btn').forEach(b => b.classList.remove('active'));
+        // --- GERENCIADOR DO MODO TEATRO ---
+        function openGame(gameId) {
+            document.getElementById('lobby-container').style.display = 'none';
+            document.getElementById('theater-mode').style.display = 'flex';
             
-            document.getElementById(`game-${gameId}`).classList.add('active');
-            event.target.classList.add('active');
+            // Esconde todas as telas internas de jogos
+            ['snake', 'damas', 'xadrez'].forEach(id => {
+                document.getElementById(`play-${id}`).style.display = 'none';
+            });
+
+            // Mostra o jogo escolhido e inicializa
+            document.getElementById(`play-${gameId}`).style.display = 'flex';
 
             if(gameId === 'snake') resetSnake();
             if(gameId === 'damas') initDamas();
             if(gameId === 'xadrez') initXadrez();
         }
 
-        // --- CODE 1: COBRINHA (SNAKE) ---
+        function closeGame() {
+            clearInterval(sInterval); // Para o loop da cobrinha
+            document.getElementById('theater-mode').style.display = 'none';
+            document.getElementById('lobby-container').style.display = 'block';
+        }
+
+        // --- ENGINES DOS JOGOS (MANTIDOS E AJUSTADOS) ---
+        // 1. COBRINHA
         const sCanvas = document.getElementById("snakeCanvas");
-        const sCtx = sCanvas.getContext("2d");
-        const sSize = 20;
-        const sCount = sCanvas.width / sSize;
-        let snake, food, sdx, sdy, sScore, sInterval;
-
-        function resetSnake() {
-            snake = [{x: 9, y: 9}]; food = {x: 4, y: 4};
-            sdx = 1; sdy = 0; sScore = 0;
-            document.getElementById("snake-score").innerText = sScore;
-            clearInterval(sInterval);
-            sInterval = setInterval(updateSnake, 120);
-        }
-        function updateSnake() {
-            const head = {x: snake[0].x + sdx, y: snake[0].y + sdy};
-            if(head.x<0 || head.x>=sCount || head.y<0 || head.y>=sCount) return resetSnake();
-            for(let i=0; i<snake.length; i++) if(snake[i].x===head.x && snake[i].y===head.y) return resetSnake();
-            
-            snake.unshift(head);
-            if(head.x===food.x && head.y===food.y) {
-                sScore += 10; document.getElementById("snake-score").innerText = sScore;
-                food = {Math: Math.floor(Math.random()*sCount), y: Math.floor(Math.random()*sCount)};
-            } else { snake.pop(); }
-
-            sCtx.fillStyle = "#000"; sCtx.fillRect(0,0,sCanvas.width,sCanvas.height);
-            sCtx.fillStyle = "#00ff88"; snake.forEach(p => sCtx.fillRect(p.x*sSize, p.y*sSize, sSize-1, sSize-1));
-            sCtx.fillStyle = "#ff4444"; sCtx.fillRect(food.x*sSize, food.y*sSize, sSize-1, sSize-1);
-        }
-        document.addEventListener("keydown", e => {
-            if(e.key==="ArrowUp" && sdy===0) { sdx=0; sdy=-1; }
-            if(e.key==="ArrowDown" && sdy===0) { sdx=0; sdy=1; }
-            if(e.key==="ArrowLeft" && sdx===0) { sdx=-1; sdy=0; }
-            if(e.key==="ArrowRight" && sdx===0) { sdx=1; sdy=0; }
-        });
-        document.getElementById("s-up").onclick = () => { if(sdy===0) { sdx=0; sdy=-1; } };
-        document.getElementById("s-down").onclick = () => { if(sdy===0) { sdx=0; sdy=1; } };
-        document.getElementById("s-left").onclick = () => { if(sdx===0) { sdx=-1; sdy=0; } };
-        document.getElementById("s-right").onclick = () => { if(sdx===0) { sdx=1; sdy=0; } };
-
-
-        // --- CODE 2: DAMAS SIMPLE ---
-        let dBoard = [], dTurn = 'red', dSelected = null;
-        function initDamas() {
-            const b = document.getElementById("damasBoard"); b.innerHTML = "";
